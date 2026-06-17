@@ -2,7 +2,7 @@
 name: make-video
 metadata:
   version: 1.0.0
-description: Turn a video brief (resolution, duration, story, source) into a fully rendered MP4 by generating a HyperFrames web composition and rendering it deterministically. Use when asked to make/generate/render a video, create a presentation video from a codebase, topic, script, or recorded narration, or run the video-maker pipeline. Trigger - /make-video <brief.json|inline description>.
+description: Turn a prompt or brief into a fully rendered MP4 video. Generate AI videos and social clips (TikTok, Reels, YouTube Shorts), YouTube intros, startup website hero loops, product promos, marketing videos, explainers and animated data visualizations - with AI voiceover (text-to-speech), word-synced captions/subtitles, music, and real assets (icons, brand logos, stock, b-roll), rendered deterministically from HTML/GSAP. Use when asked to make, generate, create or render a video, turn a script, topic, codebase or recorded narration into a video, or produce social, marketing or explainer video content. Trigger - /make-video <brief.json|inline description>.
 ---
 
 # /make-video — brief → rendered video

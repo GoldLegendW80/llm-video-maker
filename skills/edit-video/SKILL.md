@@ -1,6 +1,6 @@
 ---
 name: edit-video
-description: Edit one chapter of an already-generated video without touching the rest. Re-storyboards and re-composes only the scenes in that chapter, then re-renders and re-verifies. Use when asked to change/redo/fix a section, scene, or chapter of an existing video-maker project. Trigger - /edit-video <project-id> <chapter-id> "<instruction>".
+description: Edit one chapter or section of an already-generated video without redoing the whole thing. Change the script, visuals, captions, or timing of a single scene, then re-render and re-verify - iterate on AI-generated videos, social clips, promos and explainers. Companion to make-video. Use when asked to change, fix, redo or tweak a section, scene or chapter of an existing video. Trigger - /edit-video <project-id> <chapter-id> "<instruction>".
 ---
 
 # /edit-video — chapter-scoped edit loop (v0)

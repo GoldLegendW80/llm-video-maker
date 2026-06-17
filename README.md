@@ -2,10 +2,12 @@
 
 [![skills.sh](https://skills.sh/b/GoldLegendW80/llm-video-maker)](https://skills.sh/GoldLegendW80/llm-video-maker)
 
-Tell your AI coding agent what video you want — it writes the script, builds the visuals, adds
-voiceover, captions and music, and renders a finished **MP4**. Powered by the
-[HyperFrames](https://www.npmjs.com/package/hyperframes) engine. Two skills for
-[skills.sh](https://www.skills.sh).
+Tell your AI coding agent what video you want — it writes the script, designs the visuals, adds
+**AI voiceover**, **captions** and music, and renders a finished **MP4**. Generate **TikToks, Reels &
+YouTube Shorts, YouTube intros, startup hero videos, product promos, explainers and animated data
+visualizations** from a single prompt — a prompt-driven, **Remotion-style** video generator powered by
+the [HyperFrames](https://www.npmjs.com/package/hyperframes) engine. Two agent skills for
+[skills.sh](https://www.skills.sh) — works with **Claude Code, Cursor, Codex, Windsurf & Gemini**.
 
 ## See it work
 
@@ -19,7 +21,7 @@ voiceover, captions and music, and renders a finished **MP4**. Powered by the
 
 | Viral TikTok · 9:16 | Startup hero · 16:9 | Data explainer · 1:1 |
 |:--:|:--:|:--:|
-| [<img src="examples/worldcup-tiktok/poster.png" height="220">](examples/worldcup-tiktok/demo.mp4) | [<img src="examples/startup-hero/poster.png" height="220">](examples/startup-hero/demo.mp4) | [<img src="examples/data-explainer/poster.png" height="220">](examples/data-explainer/demo.mp4) |
+| [<img src="examples/worldcup-tiktok/poster.png" height="220" alt="AI-generated vertical TikTok video for the 2026 World Cup with captions">](examples/worldcup-tiktok/demo.mp4) | [<img src="examples/startup-hero/poster.png" height="220" alt="AI-generated startup website hero video loop, warm and minimal">](examples/startup-hero/demo.mp4) | [<img src="examples/data-explainer/poster.png" height="220" alt="AI-generated data explainer video with animated charts and cited stats">](examples/data-explainer/demo.mp4) |
 | funny · captions · TTS | calm · music-only · loop | cited stats · animated charts |
 
 Same skill, three formats, three tones. Each is a real render in [`examples/`](examples/) with its
@@ -99,6 +101,38 @@ All have free tiers; skip them and it still produces a finished video from built
 
 Input format: [`skills/make-video/schema.json`](skills/make-video/schema.json). Required fields are just
 `id`, `platform`, `story`, `source` — everything else (voiceover, captions, music, style) is optional.
+
+## What it can make
+
+From one prompt each (the [examples](examples/) above were all generated this way):
+
+- **Social video** — TikTok, Instagram Reels, YouTube Shorts (9:16) with captions + AI voiceover
+- **YouTube intros & promos** (16:9) — launches, channel intros, product spots
+- **Startup / website hero loops** — clean, muted, autoplay-ready
+- **Explainers & data visualizations** — animated charts, counters, cited stats
+- **Square social posts** (1:1) for feeds
+
+Every render is deterministic, captioned, and uses licensed assets with local AI narration.
+
+## FAQ
+
+**How do I generate a video with Claude Code (or Cursor / Codex)?**
+Install the skill, then ask your agent: `/make-video "describe the video you want"`.
+
+**Is this a Remotion alternative?**
+Same idea — video rendered from code — but prompt-driven end to end. Your agent writes the HTML/GSAP composition; you just describe it.
+
+**Can it make TikToks, Reels and YouTube Shorts?**
+Yes — vertical 9:16 with word-synced captions, plus 16:9 (YouTube) and 1:1 (square).
+
+**Does it add voiceover and subtitles?**
+Yes — local, offline AI text-to-speech (Kokoro) and word-synced captions.
+
+**Which AI agents are supported?**
+Claude Code, Cursor, Codex, Windsurf, Gemini, Cline and more — anything [skills.sh](https://www.skills.sh) installs into.
+
+**Is it free and open source?**
+Yes — MIT licensed.
 
 ## Responsible use
 
