@@ -52,23 +52,13 @@ via `npx hyperframes@0.6.91 doctor`):
 
 macOS: `brew install node ffmpeg` and install Chrome normally.
 
-## Want AI voiceover? (one-time setup)
+## AI voiceover (optional)
 
-For generated narration the pipeline uses a **local** text-to-speech model (Kokoro — runs offline, no
-API key). The first time, provision it once:
+Narration uses a **local, offline** text-to-speech model (Kokoro — no API key, nothing leaves your
+machine). **The agent sets this up itself.** The only one-time cost is a ~80 MB voice-model download
+the first time, which the agent runs or walks you through — it won't silently stall a render.
 
-```bash
-uv venv ~/.video-maker/runtime/python
-uv pip install --python ~/.video-maker/runtime/python/bin/python kokoro-onnx soundfile
-# then place the Kokoro model files under ~/.cache/hyperframes/tts/
-```
-
-Don't need voiceover? Skip this — use music + captions, or supply your own recording. The skill tells
-you if TTS isn't ready instead of failing mid-render.
-
-> If TTS errors with `Unexpected input data type` or `Format not recognised`, that's a kokoro-onnx
-> 0.5.0 bug: in the venv's `kokoro_onnx/__init__.py` change `np.int32` → `np.float32` on the `speed`
-> line, and `np.squeeze()` the samples before writing.
+Don't want voiceover? Skip it entirely — use music + captions, or supply your own recording.
 
 ## Optional — richer assets (free API keys)
 
