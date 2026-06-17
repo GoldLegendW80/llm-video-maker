@@ -1,102 +1,100 @@
 # LLM Video Maker
 
-Agent skills that turn a **video brief** (or a plain description) into a **fully rendered MP4** —
-LLM-authored HTML/GSAP compositions rendered deterministically with the
-[HyperFrames](https://www.npmjs.com/package/hyperframes) engine.
+Tell your AI coding agent what video you want — it writes the script, builds the visuals, adds
+voiceover, captions and music, and renders a finished **MP4**. Powered by the
+[HyperFrames](https://www.npmjs.com/package/hyperframes) engine. Two skills for
+[skills.sh](https://www.skills.sh).
 
-Two skills ship here:
-
-| Skill | Trigger | What it does |
-|-------|---------|--------------|
-| **make-video** | `/make-video <brief.json \| description>` | Full pipeline: brief → research/facts → design → storyboard → assets (icons, logos, stock, TTS narration, captions) → HTML composition → validate → render MP4 → QA report. |
-| **edit-video** | `/edit-video <id> <chapter> '<instruction>'` | Chapter-scoped edits of a finished video — re-storyboards and re-renders only the scenes in one chapter. |
-
-Square / vertical / landscape, audio-first TTS or transcript-locked user audio, captions, music,
-real-asset fetching, and a hard validation gate (lint · contrast · layout · vision pass) before render.
-
-## Install
+## 1. Install
 
 ```bash
-# Both skills, into your coding agent (Claude Code, Cursor, Codex, …)
 npx skills add GoldLegendW80/llm-video-maker
-
-# Or just one
-npx skills add GoldLegendW80/llm-video-maker --skill make-video
-npx skills add GoldLegendW80/llm-video-maker --list
 ```
 
-`npx skills add` copies each `skills/<name>/SKILL.md` plus its bundled `scripts/` and `schema.json`
-into your agent's skills directory. See [skills.sh](https://www.skills.sh) for the ecosystem.
+That's it. This copies both skills into your agent (Claude Code, Cursor, Codex, Windsurf, …).
 
-## Prerequisites
+## 2. Use
 
-The skills are self-contained (pipeline scripts are bundled), but the **runtime** they drive needs:
+Just ask your agent:
 
-- **Node ≥ 22**, **FFmpeg/FFprobe**, and **Google Chrome** (verified by `npx hyperframes@0.6.91 doctor`).
-- **HyperFrames `0.6.91` exact** — pin it in your host repo: `npm i -D hyperframes@0.6.91`
-  (never float a pre-1.0 engine; the project's `package.json` records the version that rendered it).
-- **Companion authoring skills** (hyperframes, gsap, css-animations, …) — installed once with
-  `npx hyperframes@0.6.91 skills`.
-- **Optional**, only for the `capture` asset type: `npm i -D playwright-core` (drives your installed Chrome).
-- **Optional API keys** (all free tiers) unlock more assets — `PEXELS_API_KEY` / `PIXABAY_API_KEY`
-  (stock photos + video), `GIPHY_API_KEY` / `TENOR_API_KEY` (gifs), `FREESOUND_API_KEY` (CC0 SFX),
-  `OPENAI_API_KEY` + `IMAGE_GEN=openai` (real image generation). Without keys the pipeline still
-  delivers using keyless routes (Iconify icons, simple-icons brand logos, `web` CC sources, memes,
-  live `capture`) and styled placeholders.
+```
+/make-video "30s square promo for my app — funny, high energy, French voiceover"
+```
 
-### Text-to-speech (Kokoro) — one-time setup + a known patch
+…or give it a JSON brief. To change one part of a finished video:
 
-Audio-first narration (`narration.mode: "tts"`) uses the local **Kokoro-82M** model. The desktop app
-bundles a prewarmed environment; a CLI user provisions it once:
+```
+/edit-video <project-id> <chapter> "make the intro punchier"
+```
+
+**You don't download or wire up anything by hand — the skill sets up its own tools the first time it
+runs.** Output lands in `projects/<id>/` (the MP4, plus every intermediate file, so runs are
+resumable).
+
+## What the skill pulls in for you (automatic, first run)
+
+| What | Where | Why |
+|------|-------|-----|
+| HyperFrames engine `hyperframes@0.6.91` | your project's `node_modules/` | renders the HTML composition into an MP4 |
+| Companion skills (hyperframes, gsap, css-animations…) | `.agents/skills/` (gitignored) | authoring know-how the pipeline reads |
+| Icons, brand logos, stock media, captions | `projects/<id>/assets/` | the on-screen visuals, saved locally with their licenses |
+
+Everything is fetched at build time and reused after. **Nothing accesses the network while rendering.**
+
+## What you need on your machine first
+
+Three system tools the skill can't install for you (it checks them and stops early if one is missing,
+via `npx hyperframes@0.6.91 doctor`):
+
+- **Node ≥ 22** · **FFmpeg** · **Google Chrome**
+
+macOS: `brew install node ffmpeg` and install Chrome normally.
+
+## Want AI voiceover? (one-time setup)
+
+For generated narration the pipeline uses a **local** text-to-speech model (Kokoro — runs offline, no
+API key). The first time, provision it once:
 
 ```bash
 uv venv ~/.video-maker/runtime/python
 uv pip install --python ~/.video-maker/runtime/python/bin/python kokoro-onnx soundfile
-# (no uv? python3 -m venv … then pip install kokoro-onnx soundfile)
+# then place the Kokoro model files under ~/.cache/hyperframes/tts/
 ```
 
-The Kokoro model files (`kokoro-v1.0.onnx` + `voices-v1.0.bin`) must already be present under
-`~/.cache/hyperframes/tts/` — never download them mid-run.
+Don't need voiceover? Skip this — use music + captions, or supply your own recording. The skill tells
+you if TTS isn't ready instead of failing mid-render.
 
-> **Known issue (kokoro-onnx 0.5.0):** for models exposing an `input_ids` input it sends `speed` as
-> `int32` where the ONNX model expects `float`, and `create()` returns audio shaped `(1, N)` which
-> `soundfile.write` rejects. If synthesis fails with `Unexpected input data type` or
-> `Format not recognised`, patch the venv's `kokoro_onnx/__init__.py` (`np.int32` → `np.float32` on
-> the `speed` line) and `np.squeeze(...)` the samples before writing.
+> If TTS errors with `Unexpected input data type` or `Format not recognised`, that's a kokoro-onnx
+> 0.5.0 bug: in the venv's `kokoro_onnx/__init__.py` change `np.int32` → `np.float32` on the `speed`
+> line, and `np.squeeze()` the samples before writing.
 
-Captions need word-level timestamps; if no multilingual Whisper model is provisioned, caption timing
-falls back to deterministic syllable-weighted distribution (verbatim text preserved, timing approximate).
+## Optional — richer assets (free API keys)
 
-## Quick start
+Set any of these in your environment and the pipeline grabs real media instead of styled placeholders.
+All have free tiers; skip them and it still produces a finished video from built-in icons + logos.
 
-```bash
-# 1. fast hello-world render (no LLM, ~3 min)
-cd <a hyperframes project> && npm install && npx hyperframes render
+| Key | Unlocks |
+|-----|---------|
+| `PEXELS_API_KEY` / `PIXABAY_API_KEY` | stock photos + video b-roll |
+| `GIPHY_API_KEY` / `TENOR_API_KEY` | reaction gifs |
+| `FREESOUND_API_KEY` | CC0 sound effects |
+| `OPENAI_API_KEY` + `IMAGE_GEN=openai` | AI image generation |
 
-# 2. from your agent
-/make-video briefs/my-brief.json
-# or just describe it:
-/make-video "30s square promo for <X>, funny, high energy, French voiceover"
-```
+## The two skills
 
-The input contract is [`skills/make-video/schema.json`](skills/make-video/schema.json): required
-`id`, `platform` (tiktok|reels|shorts|youtube|square|custom), `story`, `source`
-(`codebase` / `topic` / `script`). Everything else (narration, captions, music, style, output) is optional.
+| Skill | Trigger | What it does |
+|-------|---------|--------------|
+| **make-video** | `/make-video <brief.json \| description>` | brief → research → design → storyboard → assets → compose → validate → MP4 + report |
+| **edit-video** | `/edit-video <id> <chapter> '<instruction>'` | re-renders only the scenes in one chapter of a finished video |
 
-## How it works (stages)
-
-`preflight → ingest → design → storyboard → assets → compose → validate → render → QA report`
-
-Every stage writes its artifact into `projects/<id>/` so runs are resumable and auditable; re-running
-resumes from the first stale stage. The validation gate (lint, WCAG contrast, layout inspect, vision
-pass) is not skippable. All assets are vendored locally with license sidecars — no network at render time.
+Input format: [`skills/make-video/schema.json`](skills/make-video/schema.json). Required fields are just
+`id`, `platform`, `story`, `source` — everything else (voiceover, captions, music, style) is optional.
 
 ## Responsible use
 
-These skills can produce marketing/promotional content. You are responsible for the claims, brand
-marks, and regulatory disclaimers in whatever you generate (e.g. gambling ads require jurisdiction-
-specific age/risk warnings). The pipeline grounds on-screen facts to a `facts.json` and travels asset
-licensing with each project, but final compliance and rights clearance are yours.
+You're responsible for the claims, brand marks, and legal disclaimers in whatever you generate (e.g.
+gambling or finance ads need jurisdiction-specific age/risk warnings). The pipeline grounds on-screen
+facts and tracks each asset's license, but rights clearance and compliance are on you.
 
 ## License
 
