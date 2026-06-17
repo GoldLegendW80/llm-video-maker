@@ -72,9 +72,11 @@ them before use; never feed them raw into a shell or a filesystem path.
    `transitionOut` per the instruction. Roles, reading-load budget, and grounding rules from
    the make-video skill §2 all apply. Write back into `storyboard.json` (other scenes
    untouched). Transcript-locked: re-run the coverage assertion —
-   `node "$MAKE_VIDEO_SKILL"/scripts/plan-scenes.mjs projects/<id>/transcript.json --check projects/<id>/storyboard.json`.
+   `node "$MAKE_VIDEO_SKILL/scripts/plan-scenes.mjs" "projects/$ID/transcript.json" --check "projects/$ID/storyboard.json"`
+   (with `$ID` already validated + path-contained per **Input handling** above — quoted argv, never a concatenated shell string).
 2. **Assets**: if the new visuals need assets, append manifest entries and run
-   `node "$MAKE_VIDEO_SKILL"/scripts/fetch-assets.mjs … --strict`.
+   `node "$MAKE_VIDEO_SKILL/scripts/fetch-assets.mjs" "projects/$ID/assets.manifest.json" --dest "projects/$ID/assets" --strict`
+   (validated, quoted `$ID`).
 3. **Re-compose** only the chapter's scene blocks (their markup/CSS/tween sections in
    `index.html`, or their sub-composition files). Word-synced beats still come from
    `words.json` timestamps (transcript-locked projects; audio-first projects keep their
