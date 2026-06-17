@@ -19,3 +19,5 @@ snapshots/
 *.log
 .env
 .env.*
+.gstack/
+skills-lock.json

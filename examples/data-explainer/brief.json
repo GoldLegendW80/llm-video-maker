@@ -1,0 +1,16 @@
+{
+  "id": "demo-data-explainer",
+  "title": "AI in code — by the numbers (demo sample #3)",
+  "platform": "square",
+  "duration_s": 20,
+  "story": "Square data explainer on the state of AI among developers, from two real published surveys. Calm, informative, jewel-toned. Beats: 84% of developers now use AI -> GitHub passed 180M+ developers, ~1 new every second -> 1.13M+ repos ship an LLM inside -> but only 29% trust what it writes -> 'Adoption is here. Trust is the next build.' Every number real + cited on a persistent source footer (Stack Overflow Developer Survey 2025, GitHub Octoverse 2025). Counters count up; bars/rings grow. Informative, not hype.",
+  "source": { "type": "topic", "query": "Stack Overflow Developer Survey 2025 GitHub Octoverse 2025 AI developer adoption trust statistics" },
+  "audience": "developers, tech-curious, founders",
+  "tone": "calm, informative, confident, premium",
+  "narration": { "mode": "tts", "engine": "kokoro", "voice": "am_michael", "language": "en-us" },
+  "music": { "enabled": true, "file": "projects/demo-data-explainer/assets/audio/music.mp3" },
+  "captions": { "enabled": true, "style": "caption-highlight" },
+  "style": { "design_md": "projects/demo-data-explainer/design.md" },
+  "assets": { "remote": true, "image_gen": "placeholder" },
+  "output": { "format": "mp4", "quality": "high" }
+}

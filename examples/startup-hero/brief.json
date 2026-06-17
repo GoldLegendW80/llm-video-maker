@@ -1,0 +1,16 @@
+{
+  "id": "demo-startup-hero",
+  "title": "Sundial — website hero (demo sample #2)",
+  "platform": "youtube",
+  "duration_s": 12,
+  "story": "Calm, premium website-hero loop for a CLEARLY FICTIONAL demo startup, 'Sundial — time tracking that gets out of your way.' Warm, editorial, unhurried — the opposite of a hype social clip. Beats: brand wordmark fades in → headline 'Time tracking that gets out of your way' → a calm product dashboard mock floats in (a week view, auto-tracked hours, one sage progress ring) → soft CTA 'Start free'. No voiceover (music + type only). Loopable. It's a design demo: benefit copy only, NO fake stats or social-proof numbers, no claims about a real company.",
+  "source": { "type": "script", "text": "A serene SaaS hero. Register: warm editorial, confident, quiet luxury (think a beautifully-set magazine spread, not a billboard). Fictional product Sundial = effortless time tracking that disappears into your day. Recurring images: sun/dial, a calm weekly dashboard, soft light. Emotion: relief, calm, trust. Everything benefit-led; nothing quantified as a real metric." },
+  "audience": "founders, product teams browsing a SaaS landing page",
+  "tone": "calm, premium, warm, editorial, unhurried",
+  "narration": { "mode": "none" },
+  "music": { "enabled": true, "file": "projects/demo-startup-hero/assets/audio/music.mp3" },
+  "captions": { "enabled": false },
+  "style": { "design_md": "projects/demo-startup-hero/design.md" },
+  "assets": { "remote": true, "image_gen": "placeholder" },
+  "output": { "format": "mp4", "quality": "high" }
+}

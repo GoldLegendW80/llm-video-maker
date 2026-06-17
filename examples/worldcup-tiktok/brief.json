@@ -1,0 +1,16 @@
+{
+  "id": "demo-worldcup-tiktok",
+  "title": "World Cup 2026 — 48 teams, one bracket, total chaos (demo TikTok)",
+  "platform": "tiktok",
+  "duration_s": 15,
+  "story": "Fast, funny vertical social clip for the 2026 World Cup. Comedic angle: 48 teams for the first time = bracket pandemonium, and everyone suddenly thinks they're a tactical genius. Beats: the tournament is HUGE (48 teams, 3 host nations, 104 matches) → your 'perfect bracket' is destroyed by day one → everyone in the group chat is now a pundit → just enjoy the chaos. NOT a betting ad — pure football-fan comedy showcasing the video skill. Real facts only: 11 June – 19 July 2026, hosted by USA, Canada, Mexico, 48 teams (a first), 16 host cities. No FIFA emblem/trophy marks. High energy, meme-paced, caption-driven.",
+  "source": { "type": "topic", "query": "2026 FIFA World Cup format 48 teams host cities dates schedule fan facts" },
+  "audience": "football fans, social / TikTok, general",
+  "tone": "funny, high-energy, meme-paced, irreverent",
+  "narration": { "mode": "tts", "engine": "kokoro", "voice": "af_heart", "language": "en-us" },
+  "music": { "enabled": true, "file": "projects/demo-worldcup-tiktok/assets/audio/music.mp3" },
+  "captions": { "enabled": true, "style": "caption-highlight" },
+  "style": { "preset": "bold-energetic" },
+  "assets": { "remote": true, "image_gen": "placeholder" },
+  "output": { "format": "mp4", "quality": "high" }
+}
