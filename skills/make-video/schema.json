@@ -1,0 +1,341 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "video-maker/brief",
+  "title": "Video brief — the single input contract for the video-maker pipeline",
+  "type": "object",
+  "required": [
+    "id",
+    "platform",
+    "story",
+    "source"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Project slug. Output lands in projects/<id>/."
+    },
+    "title": {
+      "type": "string",
+      "description": "Working title (display only)."
+    },
+    "platform": {
+      "description": "Preset or custom geometry. Presets: tiktok|reels|shorts → 1080×1920@30 portrait; youtube → 1920×1080@30; square → 1080×1080@30.",
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "tiktok",
+            "reels",
+            "shorts",
+            "youtube",
+            "square"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "width",
+            "height"
+          ],
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 240,
+              "multipleOf": 2
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 240,
+              "multipleOf": 2
+            },
+            "fps": {
+              "type": "integer",
+              "enum": [
+                24,
+                25,
+                30,
+                50,
+                60
+              ],
+              "default": 30
+            }
+          }
+        }
+      ]
+    },
+    "duration_s": {
+      "type": "number",
+      "minimum": 5,
+      "maximum": 600,
+      "description": "Target duration in seconds. Storyboard scene durations must sum to this (±5%). When narration is enabled, audio duration wins (audio-first timing)."
+    },
+    "story": {
+      "type": "string",
+      "minLength": 10,
+      "description": "What the video should say/show. Free text: narrative intent, key messages, must-include facts."
+    },
+    "source": {
+      "description": "Where the content comes from. For codebase/topic sources, every on-screen claim must trace to extracted facts. For script sources, the script IS the truth and the agent has full creative freedom.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "path"
+          ],
+          "properties": {
+            "type": {
+              "const": "codebase"
+            },
+            "path": {
+              "type": "string",
+              "description": "Absolute path to the repository to present."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "query"
+          ],
+          "properties": {
+            "type": {
+              "const": "topic"
+            },
+            "query": {
+              "type": "string",
+              "description": "Topic to research (web) before storyboarding."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "script"
+            },
+            "text": {
+              "type": "string",
+              "description": "The story/script to interpret. If omitted, `story` is the script. The agent interprets tone, concepts, and context freely and adapts design, rhythm, and visual metaphors accordingly — full creative latitude, grounded only in the script itself."
+            }
+          }
+        }
+      ]
+    },
+    "audience": {
+      "type": "string",
+      "default": "general"
+    },
+    "tone": {
+      "type": "string",
+      "description": "e.g. 'confident, technical, energetic'."
+    },
+    "narration": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "none",
+            "tts",
+            "user-audio"
+          ],
+          "default": "none",
+          "description": "tts = pipeline generates speech and derives timing from it (audio-first). user-audio = the user supplies recorded narration + a timestamped transcript; ALL scene timing locks to the transcript (transcript-locked mode)."
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Deprecated — use mode. true ≙ mode:tts."
+        },
+        "engine": {
+          "type": "string",
+          "enum": [
+            "kokoro",
+            "openai"
+          ],
+          "default": "kokoro"
+        },
+        "voice": {
+          "type": "string",
+          "default": "af_heart"
+        },
+        "language": {
+          "type": "string",
+          "default": "en-us"
+        },
+        "audio_file": {
+          "type": "string",
+          "description": "user-audio mode: path to the narration recording (wav/mp3/m4a)."
+        },
+        "transcript_file": {
+          "type": "string",
+          "description": "user-audio mode: path to the timestamped transcript (.srt, .vtt, or whisper/hyperframes JSON). Sentence- or paragraph-level timestamps; normalized by pipeline/normalize-transcript.mjs. If absent but audio_file is set, the pipeline transcribes locally (hyperframes transcribe)."
+        }
+      }
+    },
+    "chapters": {
+      "type": "array",
+      "description": "Optional editorial structure. Each chapter groups consecutive scenes (or transcript segments) into an independently editable/re-renderable section. If omitted, the storyboard derives chapters from content beats.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "from_s": {
+            "type": "number",
+            "description": "Transcript-locked mode: chapter start timestamp."
+          },
+          "to_s": {
+            "type": "number",
+            "description": "Transcript-locked mode: chapter end timestamp."
+          },
+          "notes": {
+            "type": "string",
+            "description": "Creative direction for this chapter only."
+          }
+        }
+      }
+    },
+    "music": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "file": {
+          "type": "string",
+          "description": "Path to a licensed local track. No music API exists; tracks are curated locally."
+        }
+      }
+    },
+    "captions": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "style": {
+          "type": "string",
+          "description": "Registry caption component, e.g. caption-highlight, caption-kinetic-slam."
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "properties": {
+        "preset": {
+          "type": "string",
+          "enum": [
+            "bold-energetic",
+            "warm-editorial",
+            "dark-premium",
+            "clean-corporate",
+            "nature-earth",
+            "neon-electric",
+            "pastel-soft",
+            "jewel-rich",
+            "monochrome"
+          ],
+          "description": "House-style palette preset. Ignored if design_md is set."
+        },
+        "design_md": {
+          "type": "string",
+          "description": "Path to an existing design.md (brand source of truth)."
+        }
+      }
+    },
+    "assets": {
+      "type": "object",
+      "properties": {
+        "remote": {
+          "type": "boolean",
+          "default": true,
+          "description": "Allow fetching icons/images from the internet at BUILD time (never at render time)."
+        },
+        "image_gen": {
+          "type": "string",
+          "enum": [
+            "placeholder",
+            "openai",
+            "fal",
+            "none"
+          ],
+          "default": "placeholder",
+          "description": "placeholder = render styled slots carrying the generation prompt; openai/fal = actually generate (API key required)."
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": [
+            "mp4",
+            "webm",
+            "mov",
+            "gif"
+          ],
+          "default": "mp4"
+        },
+        "quality": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "standard",
+            "high"
+          ],
+          "default": "high"
+        },
+        "supersample_4k": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "not": {
+          "properties": {
+            "narration": {
+              "properties": {
+                "mode": {
+                  "const": "user-audio"
+                }
+              },
+              "required": [
+                "mode"
+              ]
+            }
+          },
+          "required": [
+            "narration"
+          ]
+        }
+      },
+      "then": {
+        "required": [
+          "duration_s"
+        ]
+      },
+      "$comment": "duration_s required unless narration.mode=user-audio (transcript owns the clock)"
+    }
+  ]
+}

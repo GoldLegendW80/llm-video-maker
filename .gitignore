@@ -1,0 +1,21 @@
+# deps
+node_modules/
+.pnpm-store/
+
+# generated video projects + render outputs (don't ship outputs)
+projects/
+renders/
+snapshots/
+.hyperframes/
+
+# auto-installed companion skills (per-machine, gitignored upstream too)
+.agents/skills/
+
+# runtime (TTS venv etc.)
+.video-maker/
+
+# os / editor
+.DS_Store
+*.log
+.env
+.env.*
