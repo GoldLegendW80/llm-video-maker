@@ -2,7 +2,7 @@
 name: make-video
 metadata:
   version: 1.0.0
-description: Turn a prompt or brief into a fully rendered MP4 video. Generate AI videos and social clips (TikTok, Reels, YouTube Shorts), YouTube intros, startup website hero loops, product promos, marketing videos, explainers and animated data visualizations - with AI voiceover (text-to-speech), word-synced captions/subtitles, music, and real assets (icons, brand logos, stock, b-roll), rendered deterministically from HTML/GSAP. Use when asked to make, generate, create or render a video, turn a script, topic, codebase or recorded narration into a video, or produce social, marketing or explainer video content. Trigger - /make-video <brief.json|inline description>.
+description: Turn a prompt or brief into a fully rendered MP4 video. Generate AI videos and social clips (TikTok, Reels, YouTube Shorts), YouTube intros, startup website hero loops, product promos, marketing videos, explainers and animated data visualizations - with AI voiceover (text-to-speech), word-synced captions/subtitles, music, and real assets (icons, brand logos, stock photos, video b-roll, GIFs, memes); record live website or app demos via Playwright screen capture; render code snippets with syntax highlighting; and composite it all deterministically from HTML/GSAP. Use when asked to make, generate, create or render a video, turn a script, topic, codebase or recorded narration into a video, or produce social, marketing or explainer video content. Trigger - /make-video <brief.json|inline description>.
 ---
 
 # /make-video — brief → rendered video

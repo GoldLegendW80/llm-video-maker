@@ -53,6 +53,35 @@ Just ask your agent:
 runs.** Output lands in `projects/<id>/` (the MP4, plus every intermediate file, so runs are
 resumable).
 
+## Capabilities — sources & assets
+
+**Turn almost anything into a video:**
+- an inline description or a JSON brief
+- a **topic** — researched live on the web, every on-screen fact grounded
+- a **script** — full creative interpretation
+- a **codebase** — analyzed into facts, turned into a product/feature video
+- **your own recording** + transcript — captions sync to *your* voice (transcript-locked mode)
+
+**Pull in real media (the omnivorous asset stage):**
+- **Live screen recordings via Playwright** — the `capture` type drives your real Chrome over any URL
+  (including `localhost`) with scripted scroll / click / type / hover, and records a real demo of your
+  app or site straight into the video
+- **Stock photos & video b-roll** (Pexels / Pixabay) · **GIFs** (Giphy / Tenor) · **sound effects**
+  (Freesound, CC0) · **memes** (imgflip)
+- **Real brand logos** (simple-icons) · **275k+ icons** (Iconify) · country flags
+- **AI image generation** (OpenAI / fal) — or styled on-palette placeholders
+- **Any web asset by URL** (license-tracked) · **code snippets** rendered with Shiki syntax
+  highlighting · **background removal** for transparent cut-outs
+
+**Audio:** AI voiceover (Kokoro TTS, multilingual) or OpenAI TTS or your own recording · word-synced
+captions (15 styles) · music · ducked sound effects.
+
+**Output:** any platform — TikTok / Reels / Shorts (9:16), YouTube (16:9), square (1:1) or custom
+W×H · deterministic, validated render · 4K supersample · chaptered, so you can re-edit one section
+with `/edit-video`.
+
+Every asset is vendored locally with its license — nothing hits the network at render time.
+
 ## What the skill pulls in for you (automatic, first run)
 
 | What | Where | Why |
