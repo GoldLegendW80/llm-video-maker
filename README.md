@@ -1,5 +1,7 @@
 # LLM Video Maker
 
+[![skills.sh](https://skills.sh/b/GoldLegendW80/llm-video-maker)](https://skills.sh/GoldLegendW80/llm-video-maker)
+
 Tell your AI coding agent what video you want — it writes the script, builds the visuals, adds
 voiceover, captions and music, and renders a finished **MP4**. Powered by the
 [HyperFrames](https://www.npmjs.com/package/hyperframes) engine. Two skills for
